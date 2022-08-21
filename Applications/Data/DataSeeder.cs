@@ -1,6 +1,6 @@
-﻿using api.Models;
+﻿using Application.Models;
 
-namespace api.Data
+namespace Application.Data
 {
     public class DataSeeder
     {

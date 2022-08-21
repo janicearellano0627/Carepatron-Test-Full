@@ -1,6 +1,9 @@
-﻿using api.Data;
-using api.Repositories;
+﻿using Application.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Application.Repository;
+using AutoMapper;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,7 @@ var services = builder.Services;
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
@@ -23,11 +27,13 @@ services.AddCors(options =>
         .Build());
 });
 
-// ioc
+//Data Seeder
 services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
-
 services.AddScoped<DataSeeder>();
+
 services.AddScoped<IClientRepository, ClientRepository>();
+services.AddMediatR(typeof(ClientRepository).Assembly);
+
 
 var app = builder.Build();
 
@@ -39,15 +45,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/clients", async (IClientRepository clientRepository) =>
-{
-    return await clientRepository.Get();
-})
-.WithName("get clients");
+
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.UseCors();
 
-// seed data
+
 using (var scope = app.Services.CreateScope())
 {
     var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
@@ -55,5 +63,4 @@ using (var scope = app.Services.CreateScope())
     dataSeeder.Seed();
 }
 
-// run app
 app.Run();

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace api.Models
+namespace Application.Models
 {
     public class Client
     {

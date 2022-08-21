@@ -5,7 +5,7 @@ export interface IProps {
 }
 
 export default function ClientListItem({ client }: IProps) {
-  const { id, firstName, lastName, email, phoneNumber } = client;
+  const { id, firstName, lastName, email, phone } = client;
 
   return (
     <TableRow
@@ -21,7 +21,7 @@ export default function ClientListItem({ client }: IProps) {
       <TableCell component="th" scope="row">
         {firstName} {lastName}
       </TableCell>
-      <TableCell>{phoneNumber}</TableCell>
+      <TableCell>{phone}</TableCell>
       <TableCell>{email}</TableCell>
     </TableRow>
   );

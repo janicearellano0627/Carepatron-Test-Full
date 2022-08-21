@@ -43,10 +43,11 @@ function call<T>(
 ): Promise<T> {
   let request: AxiosRequestConfig = {
     url: `${API_URL}/${uri}`,
-    withCredentials: true,
+    withCredentials: false,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
     },
     method,
     onUploadProgress,
